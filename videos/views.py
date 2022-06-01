@@ -6,6 +6,8 @@ from hitcount.views import HitCountDetailView
 from videos.forms import CommentForm, VideoCreateForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+from student.forms import *
+
 
 # Create your views here.
 
@@ -38,12 +40,14 @@ def searchBlog(request):
         return render(request, "videos/search_test.html", context)
 
 def blogs(request):
+    users = User.objects.all().filter().count()
     posts = VideoContent.objects.all().filter().order_by('-id')
     page = Paginator(posts , 6)
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
 
     context = {
+        'users':users,
         'posts' : posts,
         'page' : page,
     }
