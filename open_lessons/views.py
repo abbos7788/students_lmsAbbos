@@ -6,7 +6,7 @@ from hitcount.views import HitCountDetailView
 from open_lessons.forms import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
-
+from student.forms import *
 # Create your views here.
 
 def searchBlog(request):
@@ -38,12 +38,15 @@ def searchBlog(request):
         return render(request, "open_lessons/search_test.html", context)
 
 def blogs(request):
+    
+    users = User.objects.all().filter().count()
     posts = Open_lessons.objects.all()
     page = Paginator(posts , 2)
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
 
     context = {
+        'users':users,
         'posts' : posts,
         'page' : page,
     }
